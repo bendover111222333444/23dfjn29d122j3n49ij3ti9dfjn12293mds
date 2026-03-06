@@ -10,6 +10,8 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { SocksProxyAgent } from "socks-proxy-agent";
 import net from "net";
 
+const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
+
 const agent = new SocksProxyAgent("socks5://tlaqdnkf:7gehk0l6v9li@198.23.239.134:6540");
 const _createConnection = net.createConnection;
 net.createConnection = (options, callback) => {
