@@ -4,12 +4,17 @@ import { hostname } from "node:os";
 import { server as wisp, logging } from "@mercuryworkshop/wisp-js/server";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
-
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+import { SocksProxyAgent } from "socks-proxy-agent";
+import net from "net";
 
-const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
+const agent = new SocksProxyAgent("socks5://tlaqdnkf:7gehk0l6v9li@198.23.239.134:6540");
+const _createConnection = net.createConnection;
+net.createConnection = (options, callback) => {
+  return agent.createConnection(options, callback);
+};
 
 // Wisp Configuration: Refer to the documentation at https://www.npmjs.com/package/@mercuryworkshop/wisp-js
 
@@ -18,7 +23,6 @@ Object.assign(wisp.options, {
 	allow_udp_streams: false,
 	hostname_blacklist: [/example\.com/],
 	dns_servers: ["1.1.1.3", "1.0.0.3"],
-	proxy: "socks5://tlaqdnkf:7gehk0l6v9li@198.23.239.134:6540",
 });
 
 const fastify = Fastify({
