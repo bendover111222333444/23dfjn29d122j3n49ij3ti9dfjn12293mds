@@ -1,2 +1,2 @@
 #!/bin/bash
-npm start
+node --require global-agent/bootstrap src/index.js
