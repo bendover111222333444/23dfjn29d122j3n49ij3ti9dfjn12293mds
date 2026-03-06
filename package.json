@@ -8,7 +8,7 @@
 		"node": ">=16.0.0"
 	},
 	"scripts": {
-		"start": "bash start.sh",
+		"start": "node src/index.js",
 		"format": "prettier --write .",
 		"lint": "eslint ./src/",
 		"lint:fix": "eslint ./src/ --fix"
