@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
-./wireproxy -c config.conf &
+
+./wgcf register --accept-tos
+./wgcf generate
+
+./wireproxy -c wgcf-profile.conf &
+
 npm start
