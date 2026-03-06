@@ -19,9 +19,7 @@ const error = document.getElementById("sj-error");
  * @type {HTMLPreElement}
  */
 const errorCode = document.getElementById("sj-error-code");
-
 const { ScramjetController } = $scramjetLoadController();
-
 const scramjet = new ScramjetController({
 	files: {
 		wasm: "/scram/scramjet.wasm.wasm",
@@ -29,14 +27,10 @@ const scramjet = new ScramjetController({
 		sync: "/scram/scramjet.sync.js",
 	},
 });
-
 scramjet.init();
-
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
-
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
-
 	try {
 		await registerSW();
 	} catch (err) {
@@ -44,9 +38,12 @@ form.addEventListener("submit", async (event) => {
 		errorCode.textContent = err.toString();
 		throw err;
 	}
-
-	const url = search(address.value, searchEngine.value);
-
+	let url = search(address.value, searchEngine.value);
+	// Redirect Google searches to DuckDuckGo to avoid captchas
+	if (url.includes("google.com/search")) {
+		const query = new URL(url).searchParams.get("q");
+		url = "https://duckduckgo.com/?q=" + encodeURIComponent(query);
+	}
 	let wispUrl =
 		(location.protocol === "https:" ? "wss" : "ws") +
 		"://" +
