@@ -12,11 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u bendover111222333444 --password-stdin
+
       - name: Build and Push
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker build -t davidisthedavidofthewest1231/scramjetprxy:latest .
-          docker push davidisthedavidofthewest1231/scramjetprxy:latest
+          docker build -t ghcr.io/bendover111222333444/scramjetprxy:latest .
+          docker push ghcr.io/bendover111222333444/scramjetprxy:latest
