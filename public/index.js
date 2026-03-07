@@ -46,7 +46,7 @@ form.addEventListener("submit", async (event) => {
 	}
 	let wispUrl = "wss://patient-feather-b579.sigmasigmaonthewallwhoisthe2.workers.dev/";
 	await connection.setTransport("/libcurl/index.mjs", [
-	    { websocket: wispUrl },
+	    { websocket: wispUrl, replace: true },
 	]);
 	const frame = scramjet.createFrame();
 	frame.frame.id = "sj-frame";
