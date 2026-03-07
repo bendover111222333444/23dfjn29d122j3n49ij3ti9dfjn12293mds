@@ -12,16 +12,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/bendover111222333444/23dfjn29d122j3n49ij3ti9dfjn12293mds:latest
+          tags: davidisthedavidofthewest1231/scramjetprxy:latest
