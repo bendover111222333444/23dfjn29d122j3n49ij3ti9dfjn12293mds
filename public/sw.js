@@ -1,7 +1,7 @@
 importScripts("/scram-custom/scramjet.all.js");
 
 self.addEventListener("install", (event) => {
-    self.skipWaiting();
+    event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("activate", (event) => {
