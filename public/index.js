@@ -1,8 +1,23 @@
 "use strict";
+/**
+ * @type {HTMLFormElement}
+ */
 const form = document.getElementById("sj-form");
+/**
+ * @type {HTMLInputElement}
+ */
 const address = document.getElementById("sj-address");
+/**
+ * @type {HTMLInputElement}
+ */
 const searchEngine = document.getElementById("sj-search-engine");
+/**
+ * @type {HTMLParagraphElement}
+ */
 const error = document.getElementById("sj-error");
+/**
+ * @type {HTMLPreElement}
+ */
 const errorCode = document.getElementById("sj-error-code");
 const { ScramjetController } = $scramjetLoadController();
 const scramjet = new ScramjetController({
@@ -24,10 +39,6 @@ form.addEventListener("submit", async (event) => {
 		throw err;
 	}
 	let url = search(address.value, searchEngine.value);
-	// Force HTTPS
-	if (url.startsWith("http://")) {
-		url = url.replace("http://", "https://");
-	}
 	// Redirect Google searches to DuckDuckGo to avoid captchas
 	if (url.includes("google.com/search")) {
 		const query = new URL(url).searchParams.get("q");
