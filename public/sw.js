@@ -1,5 +1,13 @@
 importScripts("/scram-custom/scramjet.all.js");
 
+self.addEventListener("install", (event) => {
+    self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+    event.waitUntil(clients.claim());
+});
+
 const { ScramjetServiceWorker } = $scramjetLoadWorker();
 const scramjet = new ScramjetServiceWorker();
 
