@@ -1,17 +1,15 @@
 importScripts("/scram-custom/scramjet.all.js");
 
+let controller = new AbortController();
+
 self.addEventListener("install", (event) => {
-    event.waitUntil(self.skipWaiting());
+    controller.abort();
+    controller = new AbortController();
+    self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
     event.waitUntil(clients.claim());
-});
-
-self.addEventListener("message", (event) => {
-    if (event.data === "skipWaiting") {
-        self.skipWaiting();
-    }
 });
 
 const { ScramjetServiceWorker } = $scramjetLoadWorker();
