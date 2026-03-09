@@ -13,6 +13,10 @@ async function registerSW() {
 		throw new Error("Your browser doesn't support service workers.");
 	}
 
+	// Unregister existing SW before every search for a clean slate
+	const existing = await navigator.serviceWorker.getRegistration();
+	if (existing) await existing.unregister();
+
 	await navigator.serviceWorker.register(stockSW);
 
 	if (!navigator.serviceWorker.controller) {
