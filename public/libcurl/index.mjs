@@ -6371,28 +6371,24 @@ var LibcurlClient = class {
       }
     }
   }
-  async init() {
+ async init() {
     if (this.transport)
       libcurl.transport = this.transport;
     libcurl.set_websocket(this.wisp);
+    if (!libcurl.ready) {
+      await new Promise((resolve) => {
+        libcurl.onload = () => {
+          resolve(null);
+        };
+      });
+    }
     this.session = new libcurl.HTTPSession({
       proxy: this.proxy
     });
     if (this.connections)
       this.session.set_connections(...this.connections);
-    this.ready = libcurl.ready;
-    if (this.ready) {
-      console.log("running libcurl.js v" + libcurl.version.lib);
-      return;
-    }
-    ;
-    await new Promise((resolve, reject) => {
-      libcurl.onload = () => {
-        console.log("loaded libcurl.js v" + libcurl.version.lib);
-        this.ready = true;
-        resolve(null);
-      };
-    });
+    this.ready = true;
+    console.log("running libcurl.js v" + libcurl.version.lib);
   }
   ready = false;
   async meta() {
