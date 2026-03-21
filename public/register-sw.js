@@ -1,6 +1,5 @@
 "use strict";
 const stockSW = "./sw.js";
-
 const swAllowedHostnames = ["localhost", "127.0.0.1"];
 
 async function registerSW() {
@@ -15,12 +14,8 @@ async function registerSW() {
 
     await navigator.serviceWorker.register(stockSW);
 
-    const reg = await navigator.serviceWorker.ready;
-    reg.active.postMessage("claim");
-
-    if (!navigator.serviceWorker.controller) {
-        await new Promise(resolve => {
-            navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true });
-        });
-    }
+    await new Promise(resolve => {
+        if (navigator.serviceWorker.controller) return resolve();
+        navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true });
+    });
 }
