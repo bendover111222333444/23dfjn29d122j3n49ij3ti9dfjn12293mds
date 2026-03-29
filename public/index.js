@@ -32,7 +32,14 @@ const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
 
-	// Set transport before registerSW so SharedWorker port is established first
+	try {
+		await registerSW();
+	} catch (err) {
+		error.textContent = "Failed to register service worker.";
+		errorCode.textContent = err.toString();
+		throw err;
+	}
+
 	await connection.setTransport("/libcurl/index.mjs", [
 		{ websocket: [
 			"wss://dogballs.sigmasigmaonthewallwhoisthe2.workers.dev/",
@@ -42,13 +49,8 @@ form.addEventListener("submit", async (event) => {
 		], replace: true },
 	]);
 
-	try {
-		await registerSW();
-	} catch (err) {
-		error.textContent = "Failed to register service worker.";
-		errorCode.textContent = err.toString();
-		throw err;
-	}
+	// Wait for SW to acquire SharedWorker port and complete transport init
+	await new Promise(resolve => setTimeout(resolve, 2000));
 
 	let url = search(address.value, searchEngine.value);
 	// Redirect Google searches to DuckDuckGo to avoid captchas
