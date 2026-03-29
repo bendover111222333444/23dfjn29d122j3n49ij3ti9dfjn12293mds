@@ -1,5 +1,3 @@
-importScripts("/scram-custom/scramjet.all.js");
-
 let transportReadyResolve;
 const transportReady = new Promise(resolve => { transportReadyResolve = resolve; });
 
@@ -14,6 +12,7 @@ self.addEventListener("message", (event) => {
     }
 });
 
+importScripts("/scram-custom/scramjet.all.js");
 
 self.addEventListener("activate", (event) => {
     event.waitUntil(self.clients.claim());
