@@ -49,10 +49,18 @@ form.addEventListener("submit", async (event) => {
         ], replace: true },
     ]);
 
-    // Signal SW that transport is ready
-   	const reg = await navigator.serviceWorker.getRegistration();
-	const sw = reg.active || reg.waiting || reg.installing;
-	sw.postMessage({ type: "transportReady" });
+    // Wait for SW to confirm receipt before navigating
+    await new Promise((resolve) => {
+        navigator.serviceWorker.addEventListener("message", (event) => {
+            if (event.data?.type === "transportReadyAck") resolve();
+        }, { once: true });
+
+        const reg = navigator.serviceWorker.controller
+            || (navigator.serviceWorker.getRegistration && null);
+        navigator.serviceWorker.ready.then(r => {
+            (r.active || r.waiting || r.installing).postMessage({ type: "transportReady" });
+        });
+    });
 
     let url = search(address.value, searchEngine.value);
     if (url.includes("google.com/search")) {

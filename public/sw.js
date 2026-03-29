@@ -10,6 +10,7 @@ self.addEventListener("message", (event) => {
     if (event.data?.type === "transportReady") {
         console.log("sw: transportReady received, unblocking fetches");
         transportReadyResolve();
+        event.source.postMessage({ type: "transportReadyAck" });
     }
 });
 
